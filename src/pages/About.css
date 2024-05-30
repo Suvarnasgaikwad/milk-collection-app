@@ -1,0 +1,45 @@
+/* src/components/About.css */
+
+.about-container {
+  max-width: 800px;
+  margin: 2em auto;
+  padding: 1em;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+}
+
+.about-container h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.about-container p {
+  line-height: 1.6;
+  color: #555;
+}
+
+.about-container h3 {
+  color: #333;
+  margin-top: 1.5em;
+}
+
+.about-container ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  color: #555;
+}
+
+.about-container ul li {
+  margin-bottom: 0.5em;
+}
+
+.about-container a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.about-container a:hover {
+  text-decoration: underline;
+}

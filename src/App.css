@@ -1,38 +1,44 @@
-.App {
+/* src/App.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+header, footer {
+  background-color: #f8f9fa;
   text-align: center;
+  padding: 1em 0;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+form div {
+  margin-bottom: 1em;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+form label {
+  margin-right: 1em;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+button {
+  background-color: #007bff;
+  color: rgb(59, 5, 139);
+  border: none;
+  padding: 0.5em 1em;
+  cursor: pointer;
 }
-
-.App-link {
-  color: #61dafb;
+button:hover {
+  background-color: #0056b3;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+.App{
+  background-image: url("https://png.pngtree.com/thumb_back/fh260/background/20220428/pngtree-farmers-are-milking-cows-to-produce-or-obtain-milk-with-views-image_1107060.jpg");
+  position:fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  min-width: 100%;
+  min-height: 100%;
+  text-align: center;
+  background-attachment: fixed;
+}
+ /* Adjust background size for different screen sizes */
+ @media (max-width: 768px) {
+  .App{
+    background-size: contain; /* or any other style you prefer */
   }
 }

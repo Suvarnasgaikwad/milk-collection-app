@@ -1,0 +1,28 @@
+/* src/components/Header.css */
+header {
+    background-color: #229dc9;
+    padding: 0.1em 0;
+    text-align: center;
+  }
+  
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  nav ul li {
+    display: inline;
+    margin: 0 1em;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: #ebe6ef;
+    font-weight: bold;
+    font-size:larger;
+  }
+  
+  nav ul li a:hover {
+    color: #b300a7;
+  }
+  
