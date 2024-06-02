@@ -1,30 +1,14 @@
 
-
 import './FarmerList.css';
-//import AddFarmer from './AddFarmer';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+
 const MySwal = withReactContent(Swal);
-
-
-
 function FarmerList() {
   const history = useHistory();
 
-  const formedit = (farmId) => {
-    history.push('/update');
-  //  alert(farmId);
-  };
- // const [showAddFarmer, setShowAddFarmer] = useState(false);
- // const handleButtonClick = () => {
- //   setShowAddFarmer(true);
- // };
-  //const handleAddFarmerSuccess = () => {
- //   FarmerList(true)// Refresh the farmers list
- //   setShowAddFarmer(false)// Optionally hide the form after submission
- // };
  function AddFarm()
  {
   history.push('/farmers');
@@ -44,6 +28,12 @@ function FarmerList() {
       })
     })
   }
+  function formedit(id){
+    
+        console.log(id);
+   
+        history.push(`/update/${id}`);
+    }
   function deletefarm(id) {
     fetch(`http://localhost:8080/api/farm/${id}`,
     { 
@@ -74,21 +64,17 @@ function FarmerList() {
 }
 })}
   return (
-    <>
+    <div className="scrollable-container">
       <button style={{ backgroundColor: "red", marginTop: "5px" }}
         onClick={()=>AddFarm()}
-        className="button muted-button"
-      >
+        className="button muted-button" >
         Add Farmer
-
       </button>
-      {/* {showAddFarmer && <AddFarmer onSuccess={handleAddFarmerSuccess} />} */}
-      
       <table className="farmer-table">
 
         <thead>
           <tr>
-            <th>Farmer Id</th>
+            {/* <th>Farmer Id</th> */}
             <th>Farmer Name</th>
             <th>Mobile No.</th>
             <th colSpan={2} className="text-center">
@@ -100,7 +86,7 @@ function FarmerList() {
           {
             data.map((data, item) => (
               <tr key={item}>
-                <td>{data.farmId}</td>
+                {/* <td>{data.farmId}</td> */}
                 <td>{data.farmName}</td>
                 <td>{data.contactInfo}</td>
                 <td className="text-right">
@@ -126,7 +112,7 @@ function FarmerList() {
 
         </tbody>
       </table>
-    </>
+    </div>
   );
 }
 

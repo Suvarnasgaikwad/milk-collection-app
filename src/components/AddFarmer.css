@@ -28,4 +28,48 @@
     border-radius: 3px;
     
   }
+  /* Style for the select box */
+select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 200px; /* Adjust width as needed */
+  appearance: none; /* Remove default arrow in Firefox */
+  -webkit-appearance: none; /* Remove default arrow in Chrome and Safari */
+  background-color: white; /* Ensure background color is white */
+}
+
+/* Style for each option in the select box */
+option {
+  padding: 8px;
+  font-size: 16px;
+  background-color: white; /* Ensure background color is white */
+}
+
+/* Style when option is hovered */
+option:hover {
+  background-color: #f0f0f0; /* Light grey */
+}
+
+/* Style when option is selected */
+option:checked {
+  background-color: #007bff; /* Blue color for selected option */
+  color: white;
+}
+/* Scrollable container styles */
+.scrollable-container {
+  width: 100%;
+  height:500px;
+  border: 1px solid #ccc;
+  overflow-y: auto; /* Enables vertical scrolling */
+  padding: 0.1px;
+}
+
+/* Content styles */
+.content {
+  padding: 0.1px;
+}
+
  

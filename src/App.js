@@ -8,6 +8,9 @@ import HomePage from './pages/HomePage';
 import AddFarmer from './components/AddFarmer';
 import About from './pages/About';
 import Edit from './components/Edit';
+import AddMilkCollection from './components/AddMilkCollection';
+import ViewCollection from './components/ViewCollection';
+
 
 function App() {
   return (
@@ -19,7 +22,9 @@ function App() {
       <Route path="/farmers" component={AddFarmer} />
       <Route path="/about" component={About} />
      <Route path="/farmerslist" component={FarmerList} /> 
-     <Route path="/update" render={() => <Edit title="1" />} />
+     <Route path="/add-milk-collection" component={AddMilkCollection} /> 
+     <Route path="/view-collections" component={ViewCollection} />
+     <Route path="/update/:id" render={() => <Edit />} />
     </Switch>
     <Footer />
   </Router>

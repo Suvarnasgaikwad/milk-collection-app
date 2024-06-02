@@ -3,29 +3,57 @@ import React, { useState } from 'react';
 import './AddFarmer.css'; // Assuming you'll add some CSS for styling
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { useHistory } from 'react-router-dom';
+//import { useHistory } from 'react-router-dom';
 
 const MySwal = withReactContent(Swal);
- function AddFarmer () {
-  const history = useHistory();
 
-  const [farmId,setFarmId]=useState("")
-    const [farmName,setFarmName]=useState("")
-    const[contactInfo,setContactInfo]=useState("")
+ function AddFarmer () {
+    const [formData, setFormData] = useState({
+      farmName: '',
+      contactInfo: ''
+    });
+    const [errors, setErrors] = useState({});
+    const validate = () => {
+      const errors = {};
   
+      if (!formData.farmName.trim()) {
+        errors.farmName = 'Name is required';
+      } else if (formData.farmName.length < 5) {
+        errors.farmName = 'Name must be at least 5 characters';
+      } else if (formData.farmName.length > 50) {
+        errors.farmName = 'Name must be 50 characters or less';
+      }
+  
+      if (!formData.contactInfo.trim()) {
+        errors.contactInfo = 'Phone number is required';
+      } else if (!/^[0-9]+$/.test(formData.contactInfo)) {
+        errors.contactInfo = 'Phone number is invalid';
+      } else if (formData.contactInfo.length < 10 || formData.contactInfo.length > 10) {
+        errors.contactInfo = 'Phone number must be  10  digits';
+      }
+  
+      return errors;
+    };
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData({ ...formData, [name]: value });
+    };
 
      function sendData ()
     {     
-     console.warn({farmId,farmName,contactInfo})
-      let farm={farmId,farmName,contactInfo}
+  
+    const validationErrors = validate();
+    setErrors(validationErrors);
 
-       fetch("http://localhost:8080/api/farm", {
+    if (Object.keys(validationErrors).length === 0) {
+      console.log('Form Data:', formData);
+      fetch("http://localhost:8080/api/farm", {
         method: 'POST',
         headers: {
      
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify( farm ),
+        body: JSON.stringify( formData ),
       }).then((result)=>{
         if (result.ok)
           {
@@ -34,13 +62,13 @@ const MySwal = withReactContent(Swal);
               text: 'Data has been submitted successfully.',
               icon: 'success',
               confirmButtonText: 'OK',
-              
+ 
             });
-            setFarmId("");
-            setFarmName("");
-            setContactInfo("");
-            history.push('/farmerslist');
+            setFormData({ farmName: '',contactInfo: '' });
+          //  history.push('/farmerslist');
+         
           }
+         
             else{
               MySwal.fire({
                 title: 'Fill Form!',
@@ -49,28 +77,32 @@ const MySwal = withReactContent(Swal);
                 confirmButtonText: 'OK',
               });
           }
-       
-       console.warn(result);
-       
-     });
-       
         
-    
+       console.warn(result);
+     
+     });
+
+    //  setFormData({ farmName: '',contactInfo: '' });
     }
+
+    }
+  
   return (
     <form  className="farmer-registration-form">
       <div>
         <h2> Registration Form</h2>
-        <label htmlFor="farmId">Farmer Id:</label>
-        <input type="number" value={farmId}  onChange={e => setFarmId(e.target.value)}/>
+        {/* <label htmlFor="farmId">Farmer Id:</label>
+        <input type="number" value={farmId}  onChange={e => setFarmId(e.target.value)}/> */}
       </div>
       <div>
         <label htmlFor="farmName">Farmer Name:</label>
-        <input type="text" value={farmName} onChange={e => setFarmName(e.target.value)}  />
+        <input type="text" name='farmName' value={formData.farmName}  onChange={handleChange}  />
+        {errors.farmName && <div style={{ color: 'red' }}>{errors.farmName}</div>}
       </div>
       <div>
         <label htmlFor="contactInfo">Mobile Number:</label>
-        <input type="text" value={contactInfo}  onChange={e => setContactInfo(e.target.value)} />
+        <input type="text" name='contactInfo'  value={formData.contactInfo}  onChange={handleChange}  />
+        {errors.contactInfo && <div style={{ color: 'red' }}>{errors.contactInfo}</div>}
       </div>
       
       
