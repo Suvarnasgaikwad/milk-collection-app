@@ -6,11 +6,11 @@ function ViewCollection()
     <div className="scrollable-container">
     <h2>View Milk Collection </h2>
    
-      <button style={{ backgroundColor: "red", marginTop: "5px" }}
+      {/* <button style={{ backgroundColor: "red", marginTop: "5px" }}
         // onClick={()=>AddFarm()}
         className="button muted-button" >
         Add Collection
-      </button>
+      </button> */}
       <table className="farmer-table">
 
         <thead>
