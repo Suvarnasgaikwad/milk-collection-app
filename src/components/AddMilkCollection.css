@@ -1,0 +1,37 @@
+.milk-addition-form {
+    display: flex;
+    flex-direction:row;
+    color: rgb(11, 1, 11);
+    align-items: center;
+    font-weight: bold;
+    text-align: center;
+  
+  }
+   .bg{
+    margin-top: 50px;
+    margin-left: 70px;
+    margin-right: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
+    background-color: rgba(21, 159, 175, 0.92);
+    button {
+        padding: 20px 30px;
+        font-size: 20px;
+        background-color: #7f0e63;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+   }
+ 
+  
+  label {
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+  
+  
+  button:hover {
+    background-color: #42082d;
+  }

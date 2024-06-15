@@ -25,6 +25,7 @@ function App() {
      <Route path="/add-milk-collection" component={AddMilkCollection} /> 
      <Route path="/view-collections" component={ViewCollection} />
      <Route path="/update/:id" render={() => <Edit />} />
+     <Route path="/addmilk/:farmId" render={() => <AddMilkCollection />} />
     </Switch>
     <Footer />
   </Router>

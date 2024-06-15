@@ -1,92 +1,85 @@
 import React, { useState,useEffect   } from 'react';
-import './AddFarmer.css';
+// import Swal from 'sweetalert2';
+// import withReactContent from 'sweetalert2-react-content';
+import { useParams  } from 'react-router-dom';
+import './AddMilkCollection.css';
+// const MySwal = withReactContent(Swal);
+
 const AddMilkCollection = () => {
+    
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [section, setsection] = useState('');
-    const [farmers, setFarmers] = useState([]);
-    const [selectedFarmer, setSelectedFarmer] = useState('');
-   const[quantity,setQuantity]=useState('');
-    const[rate,setRate]=useState('');
-    const[amount,setAmount]=useState('');
+    const { farmId } = useParams();
+    const [farmName, setfarmName] = useState('');
+    const [contactInfo, setContact] = useState('');
+     const[quantity,setQuantity]=useState('');
     const[snf,setSnf]=useState('');
     const[fatContent,setfatContent]=useState('');
     const [milktype, setmilktype] = useState('');
 
      useEffect(() => {
+      fetch(`http://localhost:8080/api/farm/${farmId}`)
+      .then(response => response.json())
+      .then(data => {
+        setfarmName(data.farmName);
+       setContact(data.contactInfo);
+        console.log(data.farmId);
+      }).catch(error => console.error('Error fetching data:', error));
        const currentHour = new Date().getHours();
-       console.log(currentHour);
-       const defaultTimeSection = currentHour < 12 ? 'morning' : 'evening';
+       const defaultTimeSection = currentHour < 12 ? 'Morning' : 'Evening';
        setsection(defaultTimeSection);
-       console.log(defaultTimeSection);
-        fetchData();
-       }, []);
-      const fetchData = async () => {
+     
+      }, [farmId]);
+    
+      const addcollection = async (e) => {
+        let farm=({farmId,farmName,contactInfo})
+        let milkCollection=({farm,date,section,quantity,milktype,fatContent,snf})
         try {
-        const response =await fetch(`http://localhost:8080/api/farm`);
-        if (response.ok) {
-         
-           const data = await response.json();
-           setFarmers(data);
-           if (data.length > 0) {
-            setSelectedFarmer(data[0].farmId); // Assuming id is the unique identifier
+          const response = await fetch('http://localhost:8080/api/milkcollection', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(milkCollection)
+          });
+    
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
           }
-          }
-        
+    
+          const data = await response.json();
+          console.log('Success:', data);
+        } catch (error) {
+          console.error('Error:', error);
         }
-        catch (error) {
-            console.error('Error fetching data:', error);
-          }
-      };
-      const handleFarmerChange = (event) => {
-        setSelectedFarmer(event.target.value);
-
-      };
-      const addcollection =()=>{
       }
-      const handleFatChange = (e) => {
-        setfatContent(e.target.value);
-    };
-
-    const handleSnfChange = (e) => {
-        setSnf(e.target.value);
-    };
     return (
     <>
-        <div className="scrollable-container">
-         <form className="farmer-registration-form">
-         <h3>Choose a Farmer:</h3>
-         <select value={selectedFarmer} onChange={handleFarmerChange}>
-        {farmers.map((farmer,item) => (
-          <option key={item} value={farmer.farmId}>
-            {farmer.farmName}
-          </option>
-        ))}
-      </select>
-      <p>Selected Farmer ID: {selectedFarmer}</p>
-         <label>Date</label>
+      <form className="bg">  
+       <div className="milk-addition-form">
+         <label> Date </label>
          <input type='Date' value={date}   onChange={(e) => setDate(e.target.value)}/>
-          <label>Time Section</label>
-            <select>as="select"
-          value={section}
-          onChange={(e) => setsection(e.target.value)}
-          <option value="morning">Morning</option>
-          <option value="evening">Evening</option></select>
-
+          <label>Time Section </label>
+          <input type="text" value={section}   onChange={(e) => setDate(e.target.value)}/>
           <label>Milk Type</label>
             <select>as="select"
           value={milktype}
           onChange={(e) => setmilktype(e.target.value)}
           <option value="Cow">Cow</option>
           <option value="Buffalo">Buffalo</option></select>
-
-          <label>Quantity</label><input type='text' value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
-          <label>SNF</label><input type='text'value={snf} onChange={handleSnfChange} required />
-          <label>Fat</label><input type='text'value={fatContent}   onChange={handleFatChange} required/>
-          <label>Rate</label><input type='text'value={rate} onChange={(e) => setRate(e.target.value)}/>
-          <label>Amount</label><input type='text'value={amount} onChange={(e) => setAmount(e.target.value)}/>
+          </div>
+          <div className="milk-addition-form">
+          <label> Farmer Name:</label>
+          <input type="text" name="name" value={farmName} />
+          <h3>Farmer Id: {farmId} </h3>
+          
+          <label>Quantity</label><input type='text' value={quantity} onChange={(e) => setQuantity(e.target.value)} required/>
+          <label>SNF</label><input type='text'value={snf}onChange={(e) => setSnf(e.target.value)} required />
+          <label>Fat</label><input type='text'value={fatContent}   onChange={(e) => setfatContent(e.target.value)} required/>
+         </div>
          <button onClick={addcollection}>Submit</button>
          </form>
-        </div>
+       
        </>
     );
 };

@@ -3,7 +3,7 @@ import './FarmerList.css';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import React, { useEffect, useState,useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory  } from 'react-router-dom';
 import Pagination from './Pagination';
 import './Pagination.css';
 const MySwal = withReactContent(Swal);
@@ -12,6 +12,7 @@ function FarmerList() {
   const [currentPage, setCurrentPage] = useState(0);
   const [data, SetData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+
   let size=5;
   const history = useHistory();
 
@@ -39,6 +40,12 @@ function FarmerList() {
    
         history.push(`/update/${id}`);
     }
+    function addCollection(farmId){
+    
+      console.log(farmId);
+ 
+      history.push(`/addmilk/${farmId}`);
+  }
 
   function deletefarm(id) {
     fetch(`http://localhost:8080/api/farm/${id}`,
@@ -120,7 +127,7 @@ const labelStyle = {
             {/* <th>Farmer Id</th> */}
             <th>Farmer Name</th>
             <th>Mobile No.</th>
-            <th colSpan={2} className="text-center">
+            <th colSpan={3} className="text-center">
               Actions
             </th>
           </tr>
@@ -147,6 +154,15 @@ const labelStyle = {
                     className="button muted-button"
                   >
                     Delete
+                  </button>
+
+                </td>
+                <td className="text-left">
+                  <button
+                    onClick={() => addCollection(data.farmId)}
+                    className="button muted-button"
+                  >
+                    Add Collection
                   </button>
 
                 </td>
