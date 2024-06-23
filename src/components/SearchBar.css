@@ -1,0 +1,26 @@
+input {
+    width: 200px;
+    padding: 8px;
+  }
+  
+  ul {
+    border: 1px solid #ccc;
+    max-height: 100px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    position: absolute;
+    background-color: white;
+    width: 200px;
+  }
+  
+  li {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  li:hover {
+    background-color: #f0f0f0;
+  }
+  

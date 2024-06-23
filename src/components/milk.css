@@ -1,0 +1,116 @@
+/* styles.css */  
+  .container {
+    display: flex;
+    gap: 40px; /* Adjust the gap between columns as needed */
+    margin-top: 20px;
+  }
+  
+  .column {
+    max-width: 400px;
+    margin-left: 20%;
+    flex: 1; /* This makes both columns take up equal space */
+    padding: 20px;
+    background-color: rgba(21, 159, 175, 0.92);
+    border: 1px solid #ccc; /* Optional: Add a border */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visual separation */
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+  }
+  .box label
+  {
+    display: block;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  text-align:center;
+  }
+ .box{
+  background-color: rgba(21, 159, 175, 0.92);
+  max-width: 200px;
+  margin: 1em auto;
+  padding: 1em;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-left: 20%;
+  margin-right: 20px;
+ }
+ .box input,
+ .box textarea {
+   width: 75%;
+   padding: 0.5em;
+   border: 1px solid #ccc;
+   border-radius: 2px;
+   
+ }
+ .column input,
+ .column textarea {
+   width: 75%;
+   padding: 0.5em;
+   border: 1px solid #ccc;
+   border-radius: 2px;
+   
+ }
+ .column label
+ {
+   display: block;
+ margin-bottom: 0.5em;
+ font-weight: bold;
+ text-align:center;
+ }
+ .column button {
+    padding: 20px 30px;
+    font-size: 20px;
+    background-color: #7f0e63;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  .column button:hover {
+    background-color: #42082d;
+  }
+ 
+  input[type="checkbox"] {
+   
+    border: 1px solid #ccc;
+    width: 20px; /* Adjust width as needed */
+    height: 20px; /* Adjust height as needed */
+    background-color: #fff;
+    border-radius: 4px;
+    margin-right: 5px; /* Adjust spacing between checkbox and label */
+    margin-top: 15px;
+   
+  }
+
+  /* src/components/LiveSearchFarmer.css */
+.live-search-container {
+ 
+  margin: 20px;
+}
+
+input, select {
+  padding: 8px;
+}
+
+select {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+select option:first-child {
+  color: #aaa;
+}
+
+select option {
+  padding: 8px;
+}
+
+select option:hover {
+  background-color: #f0f0f0;
+}
+
+
+

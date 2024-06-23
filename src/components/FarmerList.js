@@ -40,12 +40,12 @@ function FarmerList() {
    
         history.push(`/update/${id}`);
     }
-    function addCollection(farmId){
+  //   function addCollection(farmId){
     
-      console.log(farmId);
+  //     console.log(farmId);
  
-      history.push(`/addmilk/${farmId}`);
-  }
+  //     history.push(`/addmilk/${farmId}`);
+  // }
 
   function deletefarm(id) {
     fetch(`http://localhost:8080/api/farm/${id}`,
@@ -127,7 +127,7 @@ const labelStyle = {
             {/* <th>Farmer Id</th> */}
             <th>Farmer Name</th>
             <th>Mobile No.</th>
-            <th colSpan={3} className="text-center">
+            <th colSpan={2} className="text-center">
               Actions
             </th>
           </tr>
@@ -157,7 +157,7 @@ const labelStyle = {
                   </button>
 
                 </td>
-                <td className="text-left">
+                {/* <td className="text-left">
                   <button
                     onClick={() => addCollection(data.farmId)}
                     className="button muted-button"
@@ -165,7 +165,7 @@ const labelStyle = {
                     Add Collection
                   </button>
 
-                </td>
+                </td> */}
               </tr>
             ))}
 
