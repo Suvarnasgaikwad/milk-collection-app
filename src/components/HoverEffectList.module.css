@@ -1,0 +1,13 @@
+/* HoverEffectList.module.css */
+
+.hoverEffect {
+    background-color: #f0f0f0; /* Default background color */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    padding: 10px; /* Optional: add padding to make the effect more visible */
+    margin-bottom: 5px; /* Optional: add margin between each div */
+}
+
+.hoverEffect:hover {
+    background-color: #65cee9e5; /* New background color on hover */
+    cursor: pointer;
+}
