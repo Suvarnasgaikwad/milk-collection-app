@@ -65,7 +65,7 @@ const MySwal = withReactContent(Swal);
  
             });
             setFormData({ farmName: '',contactInfo: '' });
-          //  history.push('/farmerslist');
+         //   history.push('/farmerslist');
          
           }
          

@@ -10,6 +10,7 @@ import About from './pages/About';
 import Edit from './components/Edit';
 import AddMilkCollection from './components/AddMilkCollection';
 import ViewCollection from './components/ViewCollection';
+import Settings from './components/Settings';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
      <Route path="/view-collections" component={ViewCollection} />
      <Route path="/update/:id" render={() => <Edit />} />
      <Route path="/addmilk/:farmId" render={() => <AddMilkCollection />} />
+     <Route path="/setting" component={Settings}/>
     </Switch>
     <Footer />
   </Router>

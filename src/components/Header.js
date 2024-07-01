@@ -15,7 +15,7 @@ const Header = () => {
           <li><Link to="/add-milk-collection">Add Milk Collection </Link></li>
           <li><Link to="/view-collections">View Collections</Link></li>
           <li><Link to="/about">About</Link></li>
-       
+          <li><Link to="/setting">Settings</Link></li>
         </ul>
       </nav>
     </header>

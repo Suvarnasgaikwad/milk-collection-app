@@ -40,12 +40,7 @@ function FarmerList() {
    
         history.push(`/update/${id}`);
     }
-  //   function addCollection(farmId){
-    
-  //     console.log(farmId);
  
-  //     history.push(`/addmilk/${farmId}`);
-  // }
 
   function deletefarm(id) {
     fetch(`http://localhost:8080/api/farm/${id}`,

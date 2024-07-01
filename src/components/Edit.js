@@ -52,7 +52,7 @@ const MySwal = withReactContent(Swal);
     
       <form className="farmer-registration-form">
         <h2>Update Registration Form</h2>
-      <h3>Farmer Id {id}</h3>
+      {/* <h3>Farmer Id {id}</h3> */}
         <div>
           <label>ReEnter Farmer Name:</label>
           <input type="text" name="name" value={farmName}  required onChange={(e) => setfarmName(e.target.value)}/>
