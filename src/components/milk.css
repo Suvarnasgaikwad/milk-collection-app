@@ -36,6 +36,7 @@
   border-radius: 5px;
   margin-left: 20%;
   margin-right: 20px;
+  margin-bottom: 150px;
  }
  .box input,
  .box textarea {
@@ -112,5 +113,12 @@ select option:hover {
   background-color: #f0f0f0;
 }
 
-
-
+.search :hover{
+  background: rgba(227, 227, 227);
+}
+.search :active {
+  background: rgba(227, 227, 227);
+}
+button.pressed {
+  background-color: #0056b3;
+}

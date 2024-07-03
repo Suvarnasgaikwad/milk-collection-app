@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
+import React, { useState, useEffect, useRef } from 'react';
 import './milk.css';
 import styles from './HoverEffectList.module.css';
-
 import { format } from 'date-fns';
 import { fetchSettings } from '../utils/Settings';
-const MySwal = withReactContent(Swal);
-const AddMilkCollection = () => {
+import ViewCollection  from './ViewCollection'
 
+const AddMilkCollection = () => {
+  const [isPressed, setIsPressed] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState('');
+  const inputRef = useRef(null);
+  const resultRefs = useRef([]);
+  const quantityRef = useRef(null);
+  const fatRef = useRef(null);
+  const snfRef = useRef(null);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
   const [enableFatSnf, setEnableFatSnf] = useState(false);
   const [fixedRate, setFixedRate] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
@@ -21,18 +26,20 @@ const AddMilkCollection = () => {
   const [farmers, setFarmers] = useState([]);
   const [farm, setFarm] = useState([]);
   const [isDivVisible, setIsDivVisible] = useState(true);
+  const [errors, setErrors] = useState({});
 
+  useEffect(()=>{
+    fetchSettings().then(settings => {
+      setEnableFatSnf(settings.enableFatSnf);
+      setFixedRate(settings.fixedRate);
+      console.log(settings);
+    });
+  },[]);
   useEffect(() => {
 
     const currentHour = new Date().getHours();
     const defaultTimeSection = currentHour < 12 ? 'Morning' : 'Evening';
     setsection(defaultTimeSection);
-
-    fetchSettings().then(settings => {
-      setEnableFatSnf(settings.enableFatSnf);
-      setFixedRate(settings.fixedRate);
-      // console.log(settings);
-    });
     const fetchFarmers = async () => {
       try {
         const response = await fetch(`http://localhost:8080/api/farmers/search?query=${query}`);
@@ -54,52 +61,107 @@ const AddMilkCollection = () => {
     }
 
   }, [query]);
-  const addcollection = async (e) => {
-    console.log(enableFatSnf);
-    const validationError = validateFatSnfValues();
-    if (validationError) {
-      MySwal.fire({
-          title: 'Validation Error!',
-          text: validationError,
-          icon: 'error',
-          confirmButtonText: 'OK'
-      });
-      return;
+  useEffect(() => {
+   
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  },[]);
+  const validateFat = (value) => {
+    
+    const fatValue = parseFloat(value);
+    if (isNaN(fatValue)) {
+      return 'FAT must be a required';
+    } else if (fatValue < 3.2 || fatValue > 5.0) {
+      return 'FAT must be between 3.2 and 5.0';
+    }
+ 
+    return null;
+  };
+
+  const validateSnf = (value) => {
+  
+    const snfValue = parseFloat(value);
+    if (isNaN(snfValue)) {
+      return 'SNF must be a required';
+    }
+    else if (snfValue < 8.3 || snfValue > 8.7) {
+      return 'SNF must be between 8.3 and 8.7';
+    }
+
+    return null;
+  };
+  const validateQuantity = (value) => {
+    const quantityValue = parseFloat(value);
+    if (isNaN(quantityValue)) {
+      return 'quantity must be a required';
+    } 
+    return null;
   }
 
-    const milkData = {
-      farm: farm,
-      milkType: milktype,
-      date: format(date, 'yyyy-MM-dd HH:mm:ss'),
-      section: section,
-      quantity: quantity,
-      rate: fixedRate,
-      chekbox: enableFatSnf,
-      ...(!enableFatSnf && { fatContent: fatContent, snf: snf })
-
-    };
-   
-    try {
-      const response = await fetch('http://localhost:8080/api/milkcollection', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(milkData)
-      });
-      if (! response.ok) {
-     throw new Error('Network response was not ok');
-      
-      }
-      const data = await response.json();
-      console.log('Fetched data:', data);
-    }
-    catch (error) {
-      console.error('Error:', error);
+  const handleSubmit = async (e) => {
   
+    setShowSuccessMessage(true);
+    const fatError = validateFat(fatContent);
+    const snfError = validateSnf(snf);
+    const quantityError=validateQuantity(quantity);
+    
+    if (fatError || snfError || quantityError) {
+      setErrors({ fatContent: fatError, snf: snfError,quantity:quantityError });
+      
+    
+    } else {
+      setErrors({});
+
+      const milkData = {
+        farm: farm,
+        milkType: milktype,
+        date: format(date, 'yyyy-MM-dd HH:mm:ss'),
+        section: section,
+        quantity: quantity,
+        rate: fixedRate,
+        chekbox: enableFatSnf,
+        ...(!enableFatSnf && { fatContent: fatContent, snf: snf })
+
+      };
+
+      try {
+        const response = await fetch('http://localhost:8080/api/milkcollection', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(milkData)
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+
+        }
+        const data = await response.json();
+        console.log('Fetched data:', data);
+        
+        setQuery('');
+        setQuantity('');
+        setSnf('');
+        setfatContent('');
+        setIsPressed(true);
+        setTimeout(() => setIsPressed(false), 1000);
+      setShowSuccessMessage("Form submitted successfully");
+        setTimeout(() => {
+          setShowSuccessMessage('');
+        }, 3000);
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }
+      catch (error) {
+        console.error('Error:', error);
+
+      }
     }
   }
   const handleInputChange = (e) => {
+ 
     setQuery(e.target.value);
     setIsDivVisible(true);
   };
@@ -107,42 +169,92 @@ const AddMilkCollection = () => {
     setQuery(farmer.farmName);
     setFarm(farmer);
     setIsDivVisible(false);
+    console.log(farm);
   };
   const handleChange = (event) => {
     setmilktype(event.target.value);
   };
-  const validateFatSnfValues = () => {
-    const fat = parseFloat(fatContent);
-    const Snf = parseFloat(snf);
-    if (fat < 3.2 || fat > 5.1) {
-        return 'FAT value must be between 3.0 and 8.0';
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowDown' && focusedIndex < farmers.length - 1) {
+        setFocusedIndex((prevIndex) => prevIndex + 1);
+      } else if (event.key === 'ArrowUp' && focusedIndex > 0) {
+        setFocusedIndex((prevIndex) => prevIndex - 1);
+      }
+      else if (event.key === 'Enter' && focusedIndex >= 0) {
+
+        setQuery(farmers[focusedIndex].farmName);
+        // setFarmers([]);
+        setFarm(farmers[focusedIndex]);
+        setFocusedIndex(-1);
+        setIsDivVisible(false);
+
+        console.log(farm)
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [focusedIndex, farmers, farm]);
+
+  useEffect(() => {
+    if (focusedIndex >= 0 && resultRefs.current[focusedIndex]) {
+      resultRefs.current[focusedIndex].focus();
     }
-    if (Snf < 8.2 || Snf > 8.8) {
-        return 'SNF value must be between 7.0 and 12.0';
+  }, [focusedIndex]);
+
+  const handleKeyDown = (e, nextRef) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+     //   nextRef.current.focus();
+      if (nextRef) {
+        nextRef.current.focus();
+      } 
+      else {
+        handleSubmit(e);
+       
+      }
     }
-    return null;
-};
+    
+
+  };
   return (
     <>
-      <form >
+   <div className="scrollable-container">
+      <form onSubmit={handleSubmit} >
         <div className="container">
           <div className="column">
             <div className="live-search-container">
               <label>Search farmer </label>
               <input
                 type="text"
+                ref={inputRef}
+
                 value={query}
                 onChange={handleInputChange}
                 placeholder="Search farmers..."
-              />
+              required/>
               {isDivVisible && (
                 <div style={{ backgroundColor: 'white' }}>
-                  {/* Render your search results here */}
-                  {farmers.map(farmer => (
+
+                  {farmers.map((farmer, index) => (
                     <div
+                      ref={(el) => (resultRefs.current[index] = el)}
+                      onKeyDown={(e) => handleKeyDown(e, quantityRef)}
+                      tabIndex="0"
+                      style={{
+                        // padding: '8px',
+                        // border: '1px solid black',
+                        // margin: '4px 0',
+                        backgroundColor: focusedIndex === index ? 'lightblue' : 'white',
+                      }}
                       className={styles.hoverEffect}
                       onClick={() => handleSelectFarmer(farmer)}
-                      key={farmer.farmId}
+                      key={index}
                     >
                       {farmer.farmName}
                     </div>
@@ -150,21 +262,44 @@ const AddMilkCollection = () => {
                 </div>
               )}
             </div>
-
-            <label>Quantity</label><input type='text' value={quantity} onChange={(e) => setQuantity(e.target.value)} required />
-
+             <div>
+            <label>Quantity</label><input type='text'
+              ref={quantityRef}
+              onKeyDown={(e) => handleKeyDown(e, fatRef)}
+              value={quantity} onChange={(e) => setQuantity(e.target.value)} required />
+              {errors.quantity && <div style={{ color: 'red' }}>{errors.quantity}</div>}
+              </div>
             {!enableFatSnf && (
               <div>
-                <label>Fat  </label>
-                <input type="number" value={fatContent} onChange={(e) => setfatContent(e.target.value)} required />
+                <label>  Fat  </label>
+                <input type="number"
+               
+                  ref={fatRef}
+                  onKeyDown={(e) => handleKeyDown(e, snfRef)}
+                  value={fatContent} onChange={(e) => setfatContent(e.target.value)} required />
 
-                <label> SNF  </label>
-                <input type="number" value={snf} onChange={(e) => setSnf(e.target.value)} required />
-
+                {errors.fatContent && <div style={{ color: 'red' }}>{errors.fatContent}</div>}
               </div>
             )}
-            <button onClick={addcollection}>Submit</button>
+            {!enableFatSnf && (
+              <div>
+                <label> SNF  </label>
+                <input type="number"
+                  onKeyDown={(e) => handleKeyDown(e, null)}
+                  ref={snfRef}
+                  value={snf} onChange={(e) => setSnf(e.target.value)} required />
+                {errors.snf && <div style={{ color: 'red' }}>{errors.snf}</div>}
+              </div>
+            )}
+            <button 
+             className={isPressed ? 'pressed' : ''}
+            //  onKeyDown={handleKeyDown}
+            type="submit" >Submit</button>
+            {showSuccessMessage && <p style={{ color: 'black',backgroundColor:'white',font:'bold' }}>{showSuccessMessage}</p>}
+        
           </div>
+
+
           <div className="box">
             <label> Date </label>
             <input type='Date' value={date} onChange={(e) => setDate(e.target.value)} />
@@ -181,6 +316,8 @@ const AddMilkCollection = () => {
 
         </div>
       </form>
+      <ViewCollection/>
+      </div>
 
     </>
   );
